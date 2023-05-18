@@ -1,0 +1,50 @@
+services:
+
+  wp:
+    container_name: wp
+    depends_on:
+      - db
+    image: wordpress:php8.0
+    volumes:
+      - wordpress:/var/www/html
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: userigor
+      WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: todos
+      WORDPRESS_DEBUG: 1
+    expose:
+      - "80"
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: todos
+      MYSQL_USER: userigor
+      MYSQL_PASSWORD: secret
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+
+  wpcli:
+    container_name: cli
+    depends_on:
+      - wp
+    image: wordpress:cli
+    command: tail -f /dev/null
+    volumes:
+      - wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: userigor
+      WORDPRESS_DB_PASSWORD: secret
+      WORDPRESS_DB_NAME: todos
+    profiles:
+      - dev
+
+volumes:
+  db_data:
+  wordpress:
