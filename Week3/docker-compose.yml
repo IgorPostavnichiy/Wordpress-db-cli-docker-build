@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+  db:
+    container_name: db
+    image: mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordsec
+      MYSQL_DATABASE: MyWordPressTest
+      MYSQL_USER: MyWordPressTest
+      MYSQL_PASSWORD: wordsec
+    expose:
+      - 3306
+      - 33060
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my_network
+
+  init-db:
+    image: mysql
+    command: /init_db.sh
+    environment:
+      MYSQL_ROOT_PASSWORD: wordsec
+      MYSQL_DATABASE: MyWordPressTest
+      MYSQL_USER: MyWordPressTest
+      MYSQL_PASSWORD: wordsec
+    volumes:
+      - ./init_db.sh:/init_db.sh
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - my_network
+
+  wordpress:
+    depends_on:
+      - db
+    image: custom_wp
+    ports:
+      - 80:80
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - my_network
+
+  init-cli:
+    image: wordpress:cli
+    restart: "on-failure:30"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: MyWordPressTest
+      WORDPRESS_DB_PASSWORD: wordsec
+      WORDPRESS_DB_NAME: MyWordPressTest
+    volumes:
+      - ./init_cli.sh:/init_cli.sh
+    volumes_from:
+      - wordpress
+    depends_on:
+      db:
+        condition: service_started
+      wordpress:
+        condition: service_started
+    command: /init_cli.sh  
+    networks:
+      - my_network
+
+volumes:
+  db_data:
+networks:
+  my_network:
+   driver: bridge
