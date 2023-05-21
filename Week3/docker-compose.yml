@@ -6,10 +6,10 @@ services:
     command: '--default-authentication-plugin=mysql_native_password'
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: wordsec
-      MYSQL_DATABASE: MyWordPressTest
-      MYSQL_USER: MyWordPressTest
-      MYSQL_PASSWORD: wordsec
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: WPTestDBt
+      MYSQL_USER: WPTestUser
+      MYSQL_PASSWORD: secretword
     expose:
       - 3306
       - 33060
@@ -22,10 +22,10 @@ services:
     image: mysql
     command: /init_db.sh
     environment:
-      MYSQL_ROOT_PASSWORD: wordsec
-      MYSQL_DATABASE: MyWordPressTest
-      MYSQL_USER: MyWordPressTest
-      MYSQL_PASSWORD: wordsec
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: WPTestDB
+      MYSQL_USER: WPTestUser
+      MYSQL_PASSWORD: secretword
     volumes:
       - ./init_db.sh:/init_db.sh
     depends_on:
@@ -50,9 +50,9 @@ services:
     restart: "on-failure:30"
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: MyWordPressTest
-      WORDPRESS_DB_PASSWORD: wordsec
-      WORDPRESS_DB_NAME: MyWordPressTest
+      WORDPRESS_DB_USER: WPTestUser
+      WORDPRESS_DB_PASSWORD: secretword
+      WORDPRESS_DB_NAME: WPTestDB
     volumes:
       - ./init_cli.sh:/init_cli.sh
     volumes_from:
