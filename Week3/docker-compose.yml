@@ -37,7 +37,7 @@ services:
   wordpress:
     depends_on:
       - db
-    image: custom_wp
+    image: docker.io/igorpostavnichiy/custom_wp:01
     ports:
       - 80:80
     volumes:
