@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-# Install Core
-wp --allow-root core install --url=localhost --title="MyITSite" --admin_user=dmonakh --admin_password=monakh3108 --admin_email=den3108mon@gmail.com
+# Configure WP-CLI
+wp --allow-root --path=/var/www/html core install --url=$URL --title=$TITLE --admin_user=$ADMIN_USER --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL
 
 # Download and install Neve theme
 wp --allow-root theme install neve --activate
