@@ -12,7 +12,7 @@ services:
       - 8080:80
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: userigor
+      WORDPRESS_DB_USER: WPTestUser
       WORDPRESS_DB_PASSWORD: secret
       WORDPRESS_DB_NAME: todos
       WORDPRESS_DEBUG: 1
@@ -25,7 +25,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: todos
-      MYSQL_USER: userigor
+      MYSQL_USER: WPTestUser
       MYSQL_PASSWORD: secret
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
 
@@ -39,7 +39,7 @@ services:
       - wordpress:/var/www/html
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: userigor
+      WORDPRESS_DB_USER: WPTestUser
       WORDPRESS_DB_PASSWORD: secret
       WORDPRESS_DB_NAME: todos
     profiles:
